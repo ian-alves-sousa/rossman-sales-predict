@@ -1,6 +1,6 @@
 # Rossman Drugstore Sales Prediction
 
-![Rossman!](img/rossman_logo.jpg)
+![Rossman!](img/rossmann_logo.png)
 # Introdução 
 Esse é um projeto end-to-end de Data Science com modelo de regressão adaptada para séries temporais. No qual criamos 4 tipos de modelos para predizer o valor das vendas das lojas nas próximas 6 semanas. As previsões podem ser acessadas pelo usuário por meio de um BOT no aplicativo do Telegram.
 
@@ -19,7 +19,7 @@ Esse projeto foi desenvolvido seguindo o método CRISP-DS(Cross-Industry Standar
 * Avaliação dos Resultados do Modelo e Tradução para Negócio.
 * Modelo em Produção
 
-![crisp!](img/crisp.jpeg)
+![crisp!](img/crisp.png)
 
 ### Planejamento
 * [1. Descrição e Problema de Negócio](#1-descrição-e-problema-de-negócio)
