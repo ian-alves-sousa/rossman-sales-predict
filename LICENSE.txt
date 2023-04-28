@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 Jordan Butkenicius Malheiros
+Copyright (c) 2023 Ian Alves Sousa 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
