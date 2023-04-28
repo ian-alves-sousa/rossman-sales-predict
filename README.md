@@ -1,6 +1,6 @@
 # Rossman Drugstore Sales Prediction
 
-![Rossman!](img/rossman.jpg)
+![Rossman!](img/rossman_logo.jpg)
 # Introdução 
 Esse é um projeto end-to-end de Data Science com modelo de regressão adaptada para séries temporais. No qual criamos 4 tipos de modelos para predizer o valor das vendas das lojas nas próximas 6 semanas. As previsões podem ser acessadas pelo usuário por meio de um BOT no aplicativo do Telegram.
 
@@ -15,11 +15,11 @@ Esse projeto foi desenvolvido seguindo o método CRISP-DS(Cross-Industry Standar
 * Limpeza de Dados
 * Análise Exploratória dos Dados
 * Preparação dos Dados
-* Modelos de Machine Learning e Fine-Tuning.
+* Modelos de Machine Learning, Cross-Validation e Fine-Tuning.
 * Avaliação dos Resultados do Modelo e Tradução para Negócio.
 * Modelo em Produção
 
-![crisp!](img/ds.jpeg)
+![crisp!](img/crisp.jpeg)
 
 ### Planejamento
 * [1. Descrição e Problema de Negócio](#1-descrição-e-problema-de-negócio)
@@ -53,21 +53,23 @@ Dito isso,a empresa decidiu contratar um Cientista de Dados para realizar as seg
 # 2. Base de Dados e Premissas de Negócio
 ## 2.1 Base de Dados
 O conjunto de dados total possui as informações referentes 1115 lojas e possuem os seguintes atributos:
-* Id - um identificador que representa uma dupla (Store, Date) dentro do conjunto de teste.
-* Store - identificador único de cada loja
-* Sales - O valor das vendas dado o dia.
-* Customers - número de clientes dado o dia.
-* Open - indicador que informa se a loja está aberta: 0 = fechado, 1 = aberta.
-* StateHoliday - Indica um feriado estadual. Geralmente todas lojas, com algumas exceções, fecham em feŕiados estaduais. Note que todas escolas estão fechadas nos feriados e finais de semana. a = Feriado  b = Feriado da Páscoa , c = Feriado de Natal Christmas, 0 = Nenhum
-* SchoolHoliday - indica se (Store, Date) foi afetada pelo fechamento de escolas públicas.
-* StoreType - Diferencia 4 tipos diferentes de loja: a, b, c, d
-* Assortment - Descreve o tipo de nível de estoque: a = básico, b = extra, c = extended
-* CompetitionDistance - distância em metros do competidor mais próximo.
-* CompetitionOpenSince[Month/Year] - É o ano e mês em que o concorrente mais próximo foi aberto.
-* Promo - indica se a loja está com alguma promoção em vigẽncia naquele dia.
-* Promo2 - Promo2 é uma promocação contínua e consecutiva para algumas lojas: 0 = loja não está participando, 1 = a loja está participando.
-* Promo2Since[Year/Week] - descreve o ano e a semana em que a loja começou a participar da Promo2.
-* PromoInterval - descreve os intervalos consecutivos do início da promo2, nomeando os mês que a promoção é iniciada novamente. Ex:("fev,maio,agosto") significa que cada rodada começa em fav, maio, agosto para qualquer ano dado daquela loja.
+| **Atributos** |  **Descrição**  |
+| ------------------- | ------------------- |
+|  id | Um Id que representa um (Store, Date) concatenado dentro do conjunto de teste |
+|  Store |  Um id único para cada loja |
+|  Sales |  O volume de vendas em um determinado dia |
+|  Customers |  O número de clientes em um determinado dia |
+|  Open |  Um indicador para saber se a loja estava aberta: 0 = fechada, 1 = aberta |
+|  StateHoliday |  Indica um feriado estadual. Normalmente todas as lojas, com poucas exceções, fecham nos feriados estaduais. Observe que todas as escolas fecham nos feriados e finais de semana. a = feriado, b = feriado da Páscoa, c = Natal, 0 = Nenhum |
+| SchoolHoliday |  Indica se (Store, Date) foi afetada pelo fechamento de escolas públicas |
+|  StoreType |  Diferencia entre 4 modelos de loja diferentes: a, b, c, d |
+|  Assortment |  Descreve um nível de sortimento: a = básico, b = extra, c = estendido |
+|  CompetitionDistance |  Distância em metros até a loja concorrente mais próxima |
+|  CompetitionOpenSince[Month/Year] |  Apresenta o ano e mês aproximados em que o concorrente mais próximo foi aberto |
+|  Promo |  Indica se uma loja está fazendo uma promoção naquele dia |
+|  Promo2 |  Promo2 é uma promoção contínua e consecutiva para algumas lojas: 0 = a loja não está participando, 1 = a loja está participando |
+|  Promo2Since[Year/Week] |  Descreve o ano e a semana em que a loja começou a participar da Promo2 |
+|  PromoInterval | Descreve os intervalos consecutivos de início da promoção 2, nomeando os meses em que a promoção é iniciada novamente. Por exemplo. "Fev, maio, agosto, novembro" significa que cada rodada começa em fevereiro, maio, agosto, novembro de qualquer ano para aquela loja |
 ## 2.2 Premissas de Negócio
 Para realizar esse projeto as seguintes premissas de negócio foram adotadas:
 * Os dados de costumers foram descartados, visto que para utilizar esse atributo teríamos que calcular uma previsão de número de clientes que pode-se tornar um projeto a parte complementar a este.
@@ -104,46 +106,49 @@ Criação de um bot no Aplicativo de mensagens do Telegram. Cuja consulta das pr
 
 # 4. Exploration Data Analysis 
 ## 4.1 Análise Univariada
-* Variáveis Numéricas: o histograma abaixo mostra como está organizada a distribuição das variáveis numéricas do nosso conjunto de dados.
+* Variáveis Numéricas: o histograma abaixo mostra como está organizada a distribuição das variáveis numéricas do nosso conjunto de dados. Mostra a contagem de cada variável numérica do dataset.
 
-![Numerical-Variables!](analysis-images/univariate-analysis.jpeg)
+![Numerical-Variables!](img/analise_univariada.png)
 
 ## 4.2 Análise Bivariada
 ### H2. Lojas com competidores mais próximos deveriam vender menos.
-**FALSO**, lojas com competidores mais próximos vendem mais.
+**FALSO** Lojas com competidores MAIS próximos vendem MAIS.
 * No 1º gráfico podemos ver que a maioria dos dados estão concentrados num range de distância de 0 a 25000. 
 * No 2º gráfico foi feito um agrupamento por intervalos de distância, como observado as lojas que tem competidores mais próximos tem mais vendas.
-* O heatmap demonstra uma correlação negativa, isso significa que a variável é relevante mas não muito. 
+* O heatmap demonstra uma correlação negativa, isso significa que a variável tem uma relevância média na influência das vendas e quando há influência, é no geral negativa.
  
-![H2!](analysis-images/h2.jpeg)
+![H2!](img/h2.png)
 
 ### H3. Lojas com competidores à mais tempo deveriam vender mais.
-**FALSO**, lojas com competidores à mais tempo vendem menos. 
+**FALSO**  Lojas com competidores à MAIS tempo vendem MENOS. 
 * A variável "competition_time_month" foi criada e indica há quanto tempo em meses aquela loja enfreta uma competição. PS: valores negativos significam que o competidor ainda não iniciou as vendas.
-* Podemos ver que as lojas que têm competidores há mais tempo vendem menos.
+* Podemos ver que as lojas que têm competidores há mais tempo vendem menos, devido ao segundo gráfico, que mostra um comportamento de decaímento de vendas com o aumento do tempo de competição.
+* Através do heatmap vemos uma correlação fraco para o modelo.
 
-![H3!](analysis-images/h3.jpeg)
+![H3!](img/h3.png)
 
 ### H9. Lojas deveriam vender mais no segundo semestre do ano
-**FALSO**, lojas vendem mais no 1º semestre do ano.
+**FALSO**  Lojas vendem MENOS no segundo semestre do ano.
 * Como podemos ver, durante os 6 primeiros meses as lojas vendem mais do que o resto do ano.
 * Correlação muito forte negativamente, essa é considerada uma das variáveis mais importantes para o modelo. 
 
-![H9!](analysis-images/h9.jpeg)
+![H9!](img/h9.png)
 
 ### H10. Lojas deveriam vender mais depois do dia 10 de cada mês
-**VERDADEIRO**, lojas vendem mais após dia 10 de todo mês.
+**VERDADEIRO**  Lojas vendem MAIS após dia 10 de todo mês.
 * Nessa hipótese a ideia era verificar se as vendas no início do mês, no qual geralmente é feito o pagamento de salário, conseguiria alcançar as vendas nos 20 dias restantes do mês.
 * Lojas vendem menos no período inicial de 10 dias de cada mês.
 * Correlação Negativa.
 
-![H10!](analysis-images/h10.jpeg)
+![H10!](img/h10.png)
 
 ### H11. Lojas deveriam vender menos aos finais de semana
-**VERDADEIRO**, lojas vendem mais durante os dias regulares da semana.
+**VERDADEIRO** Lojas vendem MENOS aos finais de semana.
+* Tendência de cair as vendas com o passar dos dias da semana.
+* No fim de semana as vendas caem drásticamente, principalmente no domingo.
 * Correlação forte negativamente. Isso significa que se as lojas se encontrarem no período de final de semana, irão vender menos.
 
-![H11!](analysis-images/h11.jpeg)
+![H11!](img/h11.png)
 
 ### Tabela de Insights 
 
@@ -165,22 +170,20 @@ Criação de um bot no Aplicativo de mensagens do Telegram. Cuja consulta das pr
 
 ## 4.3 Análise Multivariada
 
-![multivariate-analysis!](analysis-images/multivariate-analysis.jpeg)
+![multivariate-analysis!](img/correlacao_numerica.png)
  
  ### Correlação entre as variáveis independentes e a variável resposta
- * Variáveis com correlação positiva com as vendas:
-   * **Forte:** > *customers, open*
+ * Variáveis com correlação positiva com sales:
    * **Média:** > *promo*
    * **Fraca:** > *competition_open_since_year, promo2_since_year*
 
 * Variáveis com correlação negativa com as vendas:
-  * **Forte:** -
   * **Média:** > *day_of_week*
   * **Fraca:** > *promo2, is_promo*
 
 # 5. Seleção do Modelo de Machine Learning 
 Os seguintes algoritmos de Machine Learning foram aplicados:
-* Mean Average Model (Nosso baseline);
+* Mean Average Model (Usado como Baseline);
 * Linear Regression Model;
 * Linear Regression Regularized Model - Lasso;
 * Random Forest Regression;
@@ -193,66 +196,50 @@ O modelo RandomForestRegressor foi o modelo que apresentou o melhor desempenho e
 
 |Model Name	| MAE	| MAPE	| RMSE|
 |---------|----|----|----|
-|Random Forest Regressor	|679.098387	|0.099882	| 1009.869873
-|**XGBoost Regressor**	|**711.319910**	|**0.103848**| **1026.422526**|
-|Average Model	|1354.800353	|0.206400	|1835.135542|
-|Linear Regression	|1867.089774|	0.292694|	2671.049215|
-|Linear Regression Regularized - Lasso	|1891.704880	|0.289106	|2744.451735|
+|Random Forest Regressor	|667.434016	|0.097598	| 996.039250
+|**XGBoost Regressor**	|**756.970422**	|**0.111236**| **1095.040393**|
+|Average Model	|1354.800353	|0.455150	|1835.141019|
+|Linear Regression	|1867.269017|	0.292706|	2671.589246|
+|Linear Regression Regularized - Lasso	|1891.702083	|0.289165	|2744.462516|
 
 A real performance dos modelos utilizando método CROSS-VALIDATION.
 
 |Model Name	|MAE CV	|MAPE CV	|RMSE CV|
 |----------| -------|---------|--------|
-|Random Forest Regression	|837.47 +/- 218.61	|0.12 +/- 0.02	|1257.22 +/- 319.82|
-|**XGBoost Regressor**|**923.71 +/- 150.9**	|**0.13 +/- 0.01**	|**1323.78 +/- 214.82**|
-|Linear Regression	|2081.73 +/- 295.63	|0.3 +/- 0.02	|2952.52 +/- 468.37|
-|Linear Regression Regularized	|2116.38 +/- 341.5	|0.29 +/- 0.01	|3057.75 +/- 504.26|
+|Random Forest Regression	|843.422+/- 223.13	|0.12 +/- 0.02	|1267.99 +/- 328.10|
+|**XGBoost Regressor**|**1122.76.71 +/- 212.97**	|**0.15 +/- 0.02**	|**1622.56 +/- 317.51**|
+|Linear Regression	|2081.69 +/- 295.46	|0.3 +/- 0.02	|2952.42 +/- 468.15|
+|Linear Regression Regularized	|2116.64 +/- 341.57	|0.29 +/- 0.01	|3057.93 +/- 504.72|
 
-Escolhido o modelo de Regressão XGBoost partimos para a etapa de HyperParamater Fine-Tuning que consiste em encontrar os melhores parâmetros de treino para maximizar o aprendizado do modelo. Após encontrarmos os valores ótimos para o modelo por meio do método RandomSearch os valores finais de desempenho do modelo foram:
+Escolhido o modelo de Regressão XGBoost partimos para a etapa de HyperParamater Fine-Tuning que consiste em encontrar os melhores parâmetros de treino para maximizar o aprendizado do modelo, usamos o Random Search e definimos os parâmetros através do melhor resultado encontrado. Após encontrarmos os valores ótimos para o modelo por meio do método RandomSearch os valores finais de desempenho do modelo foram:
 
 
 ## Final-Performance Fine-Tuned CV Model
 |Model Name | MAE CV | MAPE CV | RMSE CV |
 |-----|----|----|-----
-|XGBoost Regressor | CV	887.49 +/- 148.25	|0.13 +/- 0.02	|1253.53 +/- 203.62
+|XGBoost Regressor | CV	687.286713 |0.101122	|990.867971
 
 # 7. Resultados de Negócio
-Com base no método atual de previsão de vendas é possível analisarmos a diferença de performance entre o modelo utilizado ( Average Model) e o modelo proposto XGBoost Regressor.
+Com base no método atual de previsão de vendas é possível analisarmos a diferença de performance entre o modelo utilizado (Average Model) e o modelo proposto XGBoost Regressor.
 
 **Modelo Atual baseado na média de vendas**
 
 |Cenário| Valores|
 |---|---|
-| Predições | R$280.754.389,45| 
+| Valor Real das Vendas| R$280.754.389,45| 
 
-**Modelo XGBoost sugerido**
-|Cenário|Valores|
-|------|------|
-|Predições|	R$286.772.224,00|
-|Pior Cenário|	R$286.025.344,34|
-|Melhor Cenário|	R$287.519.068,14|
-
-**Diferença entre os Modelos**
-|Cenário|Valores|
-|------|------|
-|Pior Cenário|R$5.270.954,89|
-|Melhor Cenário|R$6.764.678,69|
-
+**Modelo XGBoost sugerido**<br>
+A diferença é com relação ao valor real das vendas e a porcentagem desse valor.
+|Cenário|Valores|Diferença|%|
+|------|------|------|------|
+|Predições|	R$284,615,072.00|R$3.860.682,55|1,3751%|
+|Pior Cenário|	R$283,844,721.87|R$3.090.332,42|1,1101%|
+|Melhor Cenário|	R$285,385,428.41|R$4.631.038,96|%1,6495|
 
 O modelo XGboost teve um bom desempenho para as lojas Rossman, porém tivemos algumas lojas as quais o MAPE ficou muito acima do normal, como podemos ver nas tabelas e gráficos abaixo:
 
-|store|  predictions |worst_scenario|  best_scenario|   MAE| MAPE|
-|-----|--------------|--------------|-------------|-------|------|
-|292 |104717.539062|   101427.253881 |  108007.824244 |  3290.285182| **0.558823**
-|909 |237762.593750|   230099.762844 |  245425.424656 |  7662.830906| **0.524063**
-|876 |212583.593750|   208622.899499 |  216544.288001 |  3960.694251| **0.322960**
-|595 |379311.031250|   375259.626940 |  383362.435560 |  4051.404310| **0.280480**
-|722 |351640.437500|   349685.182168 |  353595.692832 |  1955.255332| **0.261245**
-|841 |118983.031250|   118276.835387 |  119689.227113 |  706.195863 | 0.257374
-|274 |194824.750000|   193459.754775 |  196189.745225 |  1364.995225| 0.234964
-
 * Nesse gráfico, podemos observar a distribuição dos erros MAPE para todas as lojas da rede Rossman. É importante notar que existem algumas lojas em específico que são mais desafiadoras que outras na previsão das vendas. Porém, é razoável assumir que nosso modelo desempenhou bem de maneira geral visto que a maioria das nossas lojas está concentrada em uma área com um MAPE próximo a 10%. É claro que, o CEO e a equipe de negócio devem analisar esses dados e definir se é "aceitável" esse valor de erro ou não. 
-![error!](img/mape-store.png)
+![error!](img/store_x_mape.png)
 
 * Alguns outros gráficos foram plotados com objetivo de fornecer um maior entendimento ao time de negócio como o nosso modelo se comporta de maneira geral. O 1º gráfico nos mostra os valores de vendas (linhas azuis) e a predição do modelo (linhas laranjas) das últimas 6 semanas de venda. Como podemos ver, nosso modelo se comporta muito bem, acompanhando de perto as vendas reais.
 
@@ -261,18 +248,23 @@ O modelo XGboost teve um bom desempenho para as lojas Rossman, porém tivemos al
 * No 3º gráfico podemos ver a distribuição da taxa de erro, que tem como característica uma forma normal cujo centro está tendendo a 0.
 
 * O 4º gráfico demonstra a dispersão que representa as previsões realizadas em relação aos erros de cada dia de venda. Idealmente, nós teríamos nossos pontos concentrados e formaríamos uma espécie de "tubo", pois dessa forma ela representaria uma baixa variação de erro em todos valores que a previsão de vendas poderia assumir.
-![erro2](img/errors.png)
+![erro2](img/ml_performance.png)
 
 
 # 8. Modelo em Produção
-O modelo de Machine Learning foi implementado e colocado em produção por meio da plataforma Heroku, que tem como objetivo possibilitar a criação, execução e operação de aplicativos inteiramente localizados em nuvem. 
-Além do modelo em si presente na nuvem, foi criado um BOT no aplicativo do Telegram que possibilita ao CEO e os time de negócio da empresa realizarem consultas da previsão de vendas das lojas nas próximas 6 semanas de forma simples e direta. Basta apenas utilizar um smartphone e enviar uma mensagem ao bot no Telegram localizado no endereço: https://t.me/rossman_jordanm_bot.
+O modelo de Machine Learning foi implementado e colocado em produção por meio da plataforma Render (https://render.com), que tem como objetivo possibilitar a criação, execução e operação de aplicativos inteiramente localizados em nuvem. 
+
+## Esquemático do deploy do modelo em produção
+
+![telegram_modelo](img/telegram_modelo.png)
+
+Além do modelo em si presente na nuvem, foi criado um BOT no aplicativo do Telegram que possibilita ao CEO e os time de negócio da empresa realizarem consultas da previsão de vendas das lojas nas próximas 6 semanas de forma simples e direta. Basta apenas utilizar um smartphone e enviar uma mensagem ao bot no Telegram localizado no endereço: http://t.me/projeto_rossmann_bot.
 
 Forma de Utilização:
 * Criar conta no Telegram em seu smartphone e abrir o link citado acima.
-* Enviar o caractere "/" junto ao número de loja que deseja saber a previsão de venda.
+* Enviar o número de loja que deseja saber a previsão de venda.
 
-![telegram!](img/telegram-.png)
+![telegram!](img/telegram.jpeg)
 
 # 9. Conclusão
 Nesse projeto, foram realizadas todas as etapas necessárias para a implementação de um projeto completo de Data Science em um ambiente de produção. Foi utilizado o método de gerenciamento de projeto chamado CRISP-DM/DS e obteve-se um desempenho satisfatório utilizando o modelo de Regressão XGBoost para realizar a previsão de venda das lojas da rede Rossman para as próximas 6 semanas.
@@ -290,10 +282,12 @@ Vários Insights de Negócio foram gerados durante a Análise Exploratória de d
 * A Análise Exploratória de Dados se demonstrou uma das etapas mais importantes do projeto, pois é nessa parte que podemos encontrar Insights de Negócio que promovem novos conhecimentos e até contradições que nos fazem repensar o negócio como um tudo. Essa análise também fornece ao cientista de dados uma "direção" de como melhorar seu modelo, por meio da criação de novas features e diferentes tipos de abordagem.
 
 **Trabalhos Futuros**
-* Entender melhor as lojas com taxas de erros muito elevadas.
+* Entender melhor as lojas com taxas de erros muito elevadas e trabalhar talvez e um modelo específico para elas.
 * Criar novas features a partir de variáveis com correlação forte com a variável resposta.
 * Criar um modelo específico para analisarmos o número de clientes de cada loja.
 * Tentar métodos de Encoding diferentes para melhor performance do modelo.
+* Fazer outro Fine Tuning, afim de encontrar um um erro menor e com isso melhorar a performance do modelo.
+* Apresentar mais opções de mensagens no Telegram, podendo adicionar mais de uma loja por mensagem, com mais condicionais.
 
 
 
