@@ -264,7 +264,7 @@ Forma de Utilização:
 * Criar conta no Telegram em seu smartphone e abrir o link citado acima.
 * Enviar o número de loja que deseja saber a previsão de venda.
 
-![telegram!](img/telegram_gif.gif)
+![telegram!](img/7jwsrw.gif)
 
 # 9. Conclusão
 Nesse projeto, foram realizadas todas as etapas necessárias para a implementação de um projeto completo de Data Science em um ambiente de produção. Foi utilizado o método de gerenciamento de projeto chamado CRISP-DM/DS e obteve-se um desempenho satisfatório utilizando o modelo de Regressão XGBoost para realizar a previsão de venda das lojas da rede Rossman para as próximas 6 semanas.
