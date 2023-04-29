@@ -257,12 +257,12 @@ O modelo XGboost teve um bom desempenho para as lojas Rossman, porém tivemos al
 # 8. Modelo em Produção
 O modelo de Machine Learning foi implementado e colocado em produção por meio da plataforma Render (https://render.com), que tem como objetivo possibilitar a criação, execução e operação de aplicativos inteiramente localizados em nuvem. 
 
-## Esquemático do deploy do modelo em produção
+## Esquemático do modelo em produção
 
 <div align="center">
 <img src="img/telegram_modelo.png" />
 </div>
-
+<br>
 Além do modelo em si presente na nuvem, foi criado um BOT no aplicativo do Telegram que possibilita ao CEO e os time de negócio da empresa realizarem consultas da previsão de vendas das lojas nas próximas 6 semanas de forma simples e direta. Basta apenas utilizar um smartphone e enviar uma mensagem ao bot no Telegram localizado no endereço: http://t.me/projeto_rossmann_bot.
 
 Forma de Utilização:
