@@ -234,7 +234,7 @@ Com base no método atual de previsão de vendas é possível analisarmos a dife
 **Modelo XGBoost sugerido**<br>
 A diferença é com relação o modelo atual de previsão e o modelo treinando nesse projeto.
 |Cenário|Valores|Diferença|
-|------|------|------|------|
+|------|------|------|
 |Predições|	R$284,615,072.00|R$3.860.682,55|
 |Pior Cenário|	R$283,844,721.87|R$3.090.332,42|
 |Melhor Cenário|	R$285,385,428.41|R$4.631.038,96|
