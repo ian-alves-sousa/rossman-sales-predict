@@ -1,6 +1,9 @@
 # Rossman Drugstore Sales Prediction
 
-![Rossman!](img/rossmann_logo.png)
+<div align="center">
+<img src="img/rossmann_logo.png" />
+</div>
+
 # Introdução 
 Esse é um projeto end-to-end de Data Science com modelo de regressão adaptada para séries temporais. No qual criamos 4 tipos de modelos para predizer o valor das vendas das lojas nas próximas 6 semanas. As previsões podem ser acessadas pelo usuário por meio de um BOT no aplicativo do Telegram.
 
@@ -256,7 +259,9 @@ O modelo de Machine Learning foi implementado e colocado em produção por meio 
 
 ## Esquemático do deploy do modelo em produção
 
-![telegram_modelo](img/telegram_modelo.png)
+<div align="center">
+<img src="img/telegram_modelo.png" />
+</div>
 
 Além do modelo em si presente na nuvem, foi criado um BOT no aplicativo do Telegram que possibilita ao CEO e os time de negócio da empresa realizarem consultas da previsão de vendas das lojas nas próximas 6 semanas de forma simples e direta. Basta apenas utilizar um smartphone e enviar uma mensagem ao bot no Telegram localizado no endereço: http://t.me/projeto_rossmann_bot.
 
@@ -264,7 +269,9 @@ Forma de Utilização:
 * Criar conta no Telegram em seu smartphone e abrir o link citado acima.
 * Enviar o número de loja que deseja saber a previsão de venda.
 
-![telegram!](img/7jwsrw.gif)
+<div align="center">
+<img src="img/7jwsrw.gif" />
+</div>
 
 # 9. Conclusão
 Nesse projeto, foram realizadas todas as etapas necessárias para a implementação de um projeto completo de Data Science em um ambiente de produção. Foi utilizado o método de gerenciamento de projeto chamado CRISP-DM/DS e obteve-se um desempenho satisfatório utilizando o modelo de Regressão XGBoost para realizar a previsão de venda das lojas da rede Rossman para as próximas 6 semanas.
@@ -288,8 +295,3 @@ Vários Insights de Negócio foram gerados durante a Análise Exploratória de d
 * Tentar métodos de Encoding diferentes para melhor performance do modelo.
 * Fazer outro Fine Tuning, afim de encontrar um um erro menor e com isso melhorar a performance do modelo.
 * Apresentar mais opções de mensagens no Telegram, podendo adicionar mais de uma loja por mensagem, com mais condicionais.
-
-
-
-
-
