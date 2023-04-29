@@ -229,15 +229,15 @@ Com base no método atual de previsão de vendas é possível analisarmos a dife
 
 |Cenário| Valores|
 |---|---|
-| Valor Real das Vendas| R$280.754.389,45| 
+| Predição| R$280.754.389,45| 
 
 **Modelo XGBoost sugerido**<br>
-A diferença é com relação ao valor real das vendas e a porcentagem desse valor.
-|Cenário|Valores|Diferença|%|
+A diferença é com relação o modelo atual de previsão e o modelo treinando nesse projeto.
+|Cenário|Valores|Diferença|
 |------|------|------|------|
-|Predições|	R$284,615,072.00|R$3.860.682,55|1,3751%|
-|Pior Cenário|	R$283,844,721.87|R$3.090.332,42|1,1101%|
-|Melhor Cenário|	R$285,385,428.41|R$4.631.038,96|%1,6495|
+|Predições|	R$284,615,072.00|R$3.860.682,55|
+|Pior Cenário|	R$283,844,721.87|R$3.090.332,42|
+|Melhor Cenário|	R$285,385,428.41|R$4.631.038,96|
 
 O modelo XGboost teve um bom desempenho para as lojas Rossman, porém tivemos algumas lojas as quais o MAPE ficou muito acima do normal, como podemos ver nas tabelas e gráficos abaixo:
 
