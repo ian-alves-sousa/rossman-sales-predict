@@ -10,3 +10,4 @@ scipy==1.10.1
 Boruta==0.3
 Flask==2.3.1
 matplotlib==3.7.1
+rise==5.7.1
