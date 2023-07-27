@@ -102,7 +102,7 @@ Foi encontrado os melhores parâmetros que maximizavam o aprendizado do modelo. 
 ### Passo 09. Conversão do Desempenho do Modelo em Valor de Negócio
 Nesse passo o desempenho do modelo foi analisado mediante uma perspectiva de negócio,e traduzido para valores de negócio.
 ### Passo 10. Deploy do Modelo em Produção 
-Publicação do modelo em um ambiente de produção em nuvem (Heroku) para que fosse possível o acesso de pessoas ou serviços para consulta dos resultados e com isso melhorar a decisão de negócio da empresa.
+Publicação do modelo em um ambiente de produção em nuvem (Render) para que fosse possível o acesso de pessoas ou serviços para consulta dos resultados e com isso melhorar a decisão de negócio da empresa.
 
 ### Passo 11. Telegram Bot
 Criação de um bot no Aplicativo de mensagens do Telegram. Cuja consulta das previsões podem ser feitas de qualquer lugar a qualquer momento apenas utilizando uma conexão com a internet e o aplicativo no smartphone.
